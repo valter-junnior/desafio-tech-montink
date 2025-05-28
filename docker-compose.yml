@@ -1,0 +1,72 @@
+version: '3.8'
+
+services:
+  nginx:
+    build:
+      context: ./.docker/nginx
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    volumes:
+      - ./src:/var/www/html
+    depends_on:
+      - php
+    networks:
+      - app-network
+
+  php:
+    build:
+      context: ./.docker/php
+      dockerfile: Dockerfile
+    volumes:
+      - ./src:/var/www/html
+    environment:
+      DB_HOST: mysql
+      DB_NAME: ecommerce_db
+      DB_USER: user
+      DB_PASSWORD: password
+      SMTP_HOST: smtp.mailtrap.io # Exemplo: Host de SMTP (Mailtrap para testes)
+      SMTP_PORT: 2525
+      SMTP_USERNAME: your_mailtrap_username # Substitua
+      SMTP_PASSWORD: your_mailtrap_password # Substitua
+      SMTP_FROM_EMAIL: no-reply@example.com
+      SMTP_FROM_NAME: Seu E-commerce
+    depends_on:
+      - mysql
+    networks:
+      - app-network
+  mysql:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: ecommerce_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./.docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    networks:
+      - app-network
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: mysql           
+      MYSQL_ROOT_PASSWORD: root_password
+      # PMA_USER: user
+      # PMA_PASSWORD: password
+    depends_on:
+      - mysql
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mysql_data:

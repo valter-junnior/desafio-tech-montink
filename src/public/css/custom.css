@@ -1,0 +1,52 @@
+html, body {
+    height: 100%; 
+    margin: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    display: flex; 
+    flex-direction: column;
+}
+
+main {
+    flex-grow: 1;
+    padding: 20px;
+    max-width: 1200px;
+    background-color: #fff;
+    border-radius: .3rem; 
+    box-shadow: 0 .125rem .25rem rgba(0,0,0,.075); 
+}
+
+.product-list .product-card {
+    border: 1px solid #dee2e6;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: .25rem;
+    background-color: #fefefe;
+}
+.variation-item .remove-variation-btn {
+    margin-top: 25px; 
+}
+
+.variation-item .form-group {
+    margin-bottom: 0.5rem;
+    margin-right: 1rem;
+    flex: 1; 
+}
+
+.variation-item {
+    display: flex;
+    align-items: flex-start; 
+    border: 1px dashed #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #fcfcfc;
+    border-radius: 4px;
+    flex-wrap: wrap; 
+}
+
+footer {
+    flex-shrink: 0; 
+}
