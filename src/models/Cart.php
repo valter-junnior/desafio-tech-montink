@@ -34,20 +34,18 @@ class Cart {
             return false; // Estoque insuficiente
         }
 
-        // Verifica se o item já está no carrinho
         $found = false;
         foreach ($_SESSION[self::SESSION_KEY] as &$item) {
             if ($item['variation_id'] == $variationId) {
-                // Se adicionar a um item existente, verificar estoque para a nova quantidade total
                 if ($stock['quantity'] < ($item['quantity'] + $quantity)) {
-                    return false; // Estoque insuficiente para adicionar mais
+                    return false; 
                 }
                 $item['quantity'] += $quantity;
                 $found = true;
                 break;
             }
         }
-        unset($item); // Quebra a referência
+        unset($item); 
 
         if (!$found) {
             $_SESSION[self::SESSION_KEY][] = [
@@ -88,7 +86,7 @@ class Cart {
 
     public function calculateShipping($subtotal) {
         if ($subtotal > 200.00) {
-            return 0.00; // Frete grátis
+            return 0.00;
         } elseif ($subtotal >= 52.00 && $subtotal <= 166.59) {
             return 15.00;
         } else {

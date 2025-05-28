@@ -32,7 +32,7 @@
             </div>
         <?php endif; ?>
 
-        <?php echo $content; // Conteúdo dinâmico da página ?>
+        <?php echo $content; ?>
     </main>
 
     <footer class="bg-dark text-white py-3 text-center">

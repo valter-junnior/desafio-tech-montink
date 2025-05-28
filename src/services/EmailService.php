@@ -1,6 +1,5 @@
 <?php
 // Requer instalação do PHPMailer via Composer: composer require phpmailer/phpmailer
-// Este serviço assumirá que o PHPMailer está disponível.
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -9,7 +8,7 @@ class EmailService {
     private $mail;
 
     public function __construct() {
-        require_once __DIR__ . '/../vendor/autoload.php'; // Caminho para autoload do Composer
+        require_once __DIR__ . '/../vendor/autoload.php'; 
 
         $this->mail = new PHPMailer(true);
         $this->mail->isSMTP();
@@ -17,8 +16,8 @@ class EmailService {
         $this->mail->SMTPAuth = true;
         $this->mail->Username = getenv('SMTP_USERNAME') ?: '';
         $this->mail->Password = getenv('SMTP_PASSWORD') ?: '';
-        $this->mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; // Use ENCRYPTION_SMTPS para porta 465
-        $this->mail->Port = getenv('SMTP_PORT') ?: 587; // Ou 465 para ENCRYPTION_SMTPS
+        $this->mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $this->mail->Port = getenv('SMTP_PORT') ?: 587;
 
         $this->mail->setFrom(getenv('SMTP_FROM_EMAIL') ?: 'no-reply@example.com', getenv('SMTP_FROM_NAME') ?: 'Seu E-commerce');
         $this->mail->isHTML(true);
