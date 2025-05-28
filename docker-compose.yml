@@ -21,16 +21,16 @@ services:
     volumes:
       - ./src:/var/www/html
     environment:
-      DB_HOST: mysql
-      DB_NAME: ecommerce_db
-      DB_USER: user
-      DB_PASSWORD: password
-      SMTP_HOST: smtp.mailtrap.io # Exemplo: Host de SMTP (Mailtrap para testes)
-      SMTP_PORT: 2525
-      SMTP_USERNAME: your_mailtrap_username # Substitua
-      SMTP_PASSWORD: your_mailtrap_password # Substitua
-      SMTP_FROM_EMAIL: no-reply@example.com
-      SMTP_FROM_NAME: Seu E-commerce
+      - DB_HOST
+      - DB_NAME
+      - DB_USER
+      - DB_PASSWORD
+      - SMTP_HOST
+      - SMTP_PORT
+      - SMTP_USERNAME
+      - SMTP_PASSWORD
+      - SMTP_FROM_EMAIL
+      - SMTP_FROM_NAME
     depends_on:
       - mysql
     networks:
@@ -40,10 +40,10 @@ services:
     ports:
       - "3306:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: root_password
-      MYSQL_DATABASE: ecommerce_db
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
     volumes:
       - mysql_data:/var/lib/mysql
       - ./.docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro

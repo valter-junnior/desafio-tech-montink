@@ -1,6 +1,7 @@
 <?php
 
-class Stock {
+class Stock
+{
     private $conn;
     private $table_name = "stock";
 
@@ -9,11 +10,13 @@ class Stock {
     public $quantity;
     public $last_updated;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->conn = Database::getInstance()->getConnection();
     }
 
-    public function create() {
+    public function create()
+    {
         $query = "INSERT INTO " . $this->table_name . " (variation_id, quantity) VALUES (:variation_id, :quantity)";
         $stmt = $this->conn->prepare($query);
 
@@ -26,7 +29,8 @@ class Stock {
         return $stmt->execute();
     }
 
-    public function update() {
+    public function update()
+    {
         $query = "UPDATE " . $this->table_name . " SET quantity = :quantity, last_updated = CURRENT_TIMESTAMP WHERE variation_id = :variation_id";
         $stmt = $this->conn->prepare($query);
 
@@ -39,7 +43,8 @@ class Stock {
         return $stmt->execute();
     }
 
-    public function findByVariationId($variationId) {
+    public function findByVariationId($variationId)
+    {
         $query = "SELECT * FROM " . $this->table_name . " WHERE variation_id = :variation_id LIMIT 0,1";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':variation_id', $variationId);
@@ -47,16 +52,21 @@ class Stock {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function decreaseStock($variationId, $quantity) {
-        $query = "UPDATE " . $this->table_name . " SET quantity = quantity - :quantity WHERE variation_id = :variation_id AND quantity >= :quantity";
+    public function decreaseStock($variationId, $quantity)
+    {
+        $query = "UPDATE " . $this->table_name . " SET quantity = quantity - :quantity_deduct WHERE variation_id = :variation_id AND quantity >= :quantity_check";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':quantity', $quantity, PDO::PARAM_INT);
+
+        $stmt->bindParam(':quantity_deduct', $quantity, PDO::PARAM_INT);
         $stmt->bindParam(':variation_id', $variationId, PDO::PARAM_INT);
+        $stmt->bindParam(':quantity_check', $quantity, PDO::PARAM_INT);
+
         $stmt->execute();
-        return $stmt->rowCount() > 0; // Retorna true se a linha foi afetada (estoque diminuído)
+        return $stmt->rowCount() > 0;
     }
 
-    public function increaseStock($variationId, $quantity) {
+    public function increaseStock($variationId, $quantity)
+    {
         $query = "UPDATE " . $this->table_name . " SET quantity = quantity + :quantity WHERE variation_id = :variation_id";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':quantity', $quantity, PDO::PARAM_INT);

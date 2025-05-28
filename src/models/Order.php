@@ -36,6 +36,7 @@ class Order {
 
             // 2. Inserir os itens do pedido e decrementar estoque
             $stockModel = new Stock();
+
             foreach ($cartItems as $item) {
                 if (!$stockModel->decreaseStock($item['variation_id'], $item['quantity'])) {
                     throw new Exception("Estoque insuficiente para " . $item['product_name'] . " - " . $item['variation_name']);
@@ -107,6 +108,13 @@ class Order {
             error_log("Order cancellation failed: " . $e->getMessage());
             return false;
         }
+    }
+
+    public function getAllOrders() {
+        $query = "SELECT * FROM " . $this->table_name . " ORDER BY created_at DESC";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getOrderDetails($orderId) {

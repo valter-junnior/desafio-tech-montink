@@ -12,6 +12,21 @@ class OrderController {
         $this->couponModel = new Coupon();
         $this->emailService = new EmailService(); // Inicia o serviço de e-mail
     }
+    public function index() {
+        $orders = $this->orderModel->getAllOrders(); // Novo método no modelo
+        require_once __DIR__ . '/../views/orders_list.php'; // Nova view
+    }
+
+    public function details($orderId) {
+        $order = $this->orderModel->getOrderDetails($orderId);
+        if (!$order) {
+            $_SESSION['message'] = 'Pedido não encontrado.';
+            $_SESSION['message_type'] = 'danger';
+            header('Location: /orders');
+            exit;
+        }
+        require_once __DIR__ . '/../views/order_details.php'; // Nova view
+    }
 
     public function checkout() {
         $cartItems = $this->cart->getItems();
@@ -130,7 +145,6 @@ class OrderController {
             ];
 
             $orderId = $this->orderModel->create($orderData, $cartItems, $appliedCouponId);
-
             if ($orderId) {
                 // Limpa o carrinho e as informações do cupom na sessão
                 $this->cart->clear();
@@ -144,7 +158,8 @@ class OrderController {
 
                 $_SESSION['message'] = 'Pedido #' . $orderId . ' realizado com sucesso!';
                 $_SESSION['message_type'] = 'success';
-                header('Location: /order_confirmation?order_id=' . $orderId); // Redireciona para confirmação
+               //  header('Location: /order_confirmation?order_id=' . $orderId); // Redireciona para confirmação
+                header('Location: /orders'); 
                 exit;
             } else {
                 $_SESSION['message'] = 'Erro ao finalizar pedido. Por favor, tente novamente.';

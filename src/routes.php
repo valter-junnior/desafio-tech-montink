@@ -62,6 +62,18 @@ switch ($requestUri) {
             $controller->handle();
         }
         break;
+    case '/orders':
+        if ($requestMethod == 'GET') {
+            $controller = new OrderController();
+            $controller->index(); 
+        }
+        break;
+    case '/orders/details':
+        if ($requestMethod == 'GET' && isset($_GET['id'])) {
+            $controller = new OrderController();
+            $controller->details($_GET['id']);
+        }
+        break;
     default:
         http_response_code(404);
         echo "404 Not Found";

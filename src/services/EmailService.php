@@ -49,7 +49,7 @@ class EmailService {
 
             $body .= "<p>Subtotal: R$ " . number_format($orderData['subtotal'], 2, ',', '.') . "</p>";
             $body .= "<p>Desconto: R$ " . number_format($orderData['discount'], 2, ',', '.') . "</p>";
-            $body .= "<p>Frete: R$ " . number_format($orderData['shipping_cost'], 2, ',', '.') . "</p>";
+            $body .= "<p>Frete: R$ " . number_format($orderData['shipping'], 2, ',', '.') . "</p>";
             $body .= "<h3>Total do Pedido: R$ " . number_format($orderData['total'], 2, ',', '.') . "</h3>";
             $body .= "<p>Endereço de Entrega:</p>";
             $body .= "<p>" . htmlspecialchars($orderData['address']) . "<br>";
